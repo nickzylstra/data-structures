@@ -3,7 +3,10 @@ var Tree = function(value) {
   newTree.value = value;
 
   // your code here
-  newTree.children = null;  // fix me
+  newTree.children = [];
+
+  // extend newTree with treeMethods
+  _.extend(newTree, treeMethods);
 
   return newTree;
 };
@@ -11,9 +14,19 @@ var Tree = function(value) {
 var treeMethods = {};
 
 treeMethods.addChild = function(value) {
+  // create a new tree with argument value
+  // add a new tree to the children property of this
 };
 
 treeMethods.contains = function(target) {
+  // create var called treeHasTarget starts as false
+  // if current node's value matches target
+    // set treeHasTarget to true
+  // if children exists
+    // iterate through children
+      // set treeHasTarget to return value of calling contains on child
+
+  // return treeHasTarget
 };
 
 
