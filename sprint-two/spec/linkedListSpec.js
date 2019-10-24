@@ -31,6 +31,15 @@ describe('linkedList', function() {
     expect(linkedList.head.value).to.equal(5);
   });
 
+  it('should return null if list is empty when removeHead is called', function() {
+    const result = linkedList.removeHead();
+    expect(result).to.equal(null);
+  });
+
+  // should still function after list is filled, emptied, and refilled
+
+  // should return same value if value is added to empty list and removeHead is immediately called
+
   it('should return the value of the former head when removeHead is called', function() {
     linkedList.addToTail(4);
     expect(linkedList.removeHead()).to.equal(4);

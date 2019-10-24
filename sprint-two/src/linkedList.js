@@ -17,17 +17,26 @@ var LinkedList = function() {
   };
 
   list.removeHead = function() {
-    // get value of head
-    // bind head to the value of next of head
-    // return the value
+    if (!this.head) {
+      return null;
+    }
+    const node = this.head;
+    this.head = node.next;
+    if (this.head === null) {
+      this.tail = null;
+    }
+    return node.value;
   };
 
   list.contains = function(target) {
-    // make a variable for the current node
-    // iterating through the linked list
-     // check if value matches the target
-       // return true
-    // return false
+    let currentNode = this.head;
+    while (currentNode !== null) {
+      if (currentNode.value === target) {
+        return true;
+      }
+      currentNode = currentNode.next;
+    }
+    return false;
   };
 
   return list;
@@ -44,4 +53,5 @@ var Node = function(value) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+addtotail - constant, removehead - constant, contains - linear
  */
