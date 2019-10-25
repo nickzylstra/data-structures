@@ -33,13 +33,13 @@ Graph.prototype.removeNode = function(node) {
   // if node is not in graph
   if (!this.contains(node)) {
     // throw err
-    throw new syntaxError();
+    throw new SyntaxError();
   }
 
   const nodeEdges = this[node];
   nodeEdges.forEach((edge) => {
-    endNodeEdges = this[edge];
-    nodeIndexInEndNodeEdges = endNodeEdges.indexof(node);
+    const endNodeEdges = this[edge];
+    const nodeIndexInEndNodeEdges = endNodeEdges.indexOf(node);
     endNodeEdges.splice(nodeIndexInEndNodeEdges, 1);
   });
 
@@ -76,18 +76,46 @@ Graph.prototype.removeNode = function(node) {
 
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
 Graph.prototype.hasEdge = function(fromNode, toNode) {
+  // do we need to check for distand connections?
+  let hasEdge = false;
+  if (this.contains(fromNode) && this.contains(toNode)) {
+    hasEdge = this[toNode].indexOf(fromNode) > -1 && this[fromNode].indexOf(toNode) > -1;
+  }
+  // return if toNode has fromNode edge and fromNode has toNode edge
+  return hasEdge;
 };
 
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
+  // check that nodes exist
+  // debugger;
+  if (!this.contains(fromNode) || !this.contains(toNode)) {
+    throw new SyntaxError();
+  }
+  // push fromNode to toNode's edges list
+  this[toNode].push(fromNode);
+  // push toNode to fromNode's edges list
+  this[fromNode].push(toNode);
 };
 
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
+  // check that nodes exist
+  if (!this.contains(fromNode) || !this.contains(toNode)) {
+    throw new SyntaxError();
+  }
+  const toNodeIdx = this[toNode].indexOf(fromNode);
+  this[toNode].splice(toNodeIdx, 1);
+  const fromNodeIdx = this[fromNode].indexOf(toNode);
+  this[fromNode].splice(fromNodeIdx, 1);
 };
 
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
+  const nodeKeys = Object.keys(this);
+  nodeKeys.forEach((key) => {
+    cb(key);
+  });
 };
 
 /*
