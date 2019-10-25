@@ -1,22 +1,31 @@
 // Instantiate a new graph
 var Graph = function() {
-  this.nodes = [];
+  // this.nodes = [];
 };
 
 // Add a node to the graph, passing in the node's value.
 Graph.prototype.addNode = function(node) {
-  const nodeObj = {value: node, edges: []};
-  this.nodes.push(nodeObj);
+  // const nodeObj = {value: node, edges: []};
+  // this.nodes.push(nodeObj);
+  this[node] = [];
 };
 
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
 Graph.prototype.contains = function(node) {
-  for (let i = 0; i < this.nodes.length; i++) {
+  /* for (let i = 0; i < this.nodes.length; i++) {
     if (this.nodes[i].value === node) {
       return true;
     }
   }
-  return false;
+  return false; */
+  const nodeKeys = Object.keys(this);
+  let containsNode = false;
+  nodeKeys.forEach((nodeKey) => {
+    if (nodeKey === node.toString()) {
+      containsNode = true;
+    }
+  });
+  return containsNode;
 };
 
 // Removes a node from the graph.
@@ -26,7 +35,17 @@ Graph.prototype.removeNode = function(node) {
     // throw err
     throw new syntaxError();
   }
-  // create a var for node obj
+
+  const nodeEdges = this[node];
+  nodeEdges.forEach((edge) => {
+    endNodeEdges = this[edge];
+    nodeIndexInEndNodeEdges = endNodeEdges.indexof(node);
+    endNodeEdges.splice(nodeIndexInEndNodeEdges, 1);
+  });
+
+  delete this[node];
+
+  /* // create a var for node obj
   let nodeObj;
   let nodeObjIdx;
   // find the node inside nodes array
@@ -52,7 +71,7 @@ Graph.prototype.removeNode = function(node) {
     edgeNodeObj.edges.splice(edgeIdx, 1);
   }
   // remove the node
-  this.nodes.splice(nodeObjIdx, 1);
+  this.nodes.splice(nodeObjIdx, 1); */
 };
 
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
