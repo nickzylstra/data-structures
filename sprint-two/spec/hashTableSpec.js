@@ -13,6 +13,28 @@ describe('hashTable', function() {
     expect(hashTable.retrieve).to.be.a('function');
   });
 
+  it('should not change the length of the storage array when insert is called', function() {
+    let length = 0;
+    hashTable._storage.each(() => {
+      length++;
+    });
+    hashTable.insert('Steven', 'Seagal');
+    hashTable.insert('Stevennee', 'Seagal');
+    hashTable.insert('Stevenrrl', 'Seagal');
+    hashTable.insert('Stevengvv', 'Seagal');
+    hashTable.insert('Stevehtssn', 'Seagal');
+    hashTable.insert('Stevelhn', 'Seagal');
+    hashTable.insert('Steveggn', 'Seagal');
+    hashTable.insert('Stevenrr', 'Seagal');
+    hashTable.insert('Stevethtshn', 'Seagal');
+    hashTable.insert('Stevettn', 'Seagal');
+    let newLength = 0;
+    hashTable._storage.each(() => {
+      newLength++;
+    });
+    expect(length).to.equal(newLength);
+  });
+
   it('should store values that were inserted', function() {
     hashTable.insert('Steven', 'Seagal');
     expect(hashTable.retrieve('Steven')).to.equal('Seagal');

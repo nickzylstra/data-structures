@@ -35,11 +35,12 @@ BinarySearchTree.prototype.contains = function (inputValue) {
       return true;
     }
     if (inputValue < node.value) {
-      if (node.left === null) {
+      /* if (node.left === null) {
         return false;
       } else {
         return innerContains(node.left);
-      }
+      } */
+      return (node.left === null) ? false : innerContains(node.left);
     } else {
       if (node.right === null) {
         return false;
