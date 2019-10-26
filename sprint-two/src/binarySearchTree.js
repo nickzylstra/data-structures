@@ -65,6 +65,24 @@ BinarySearchTree.prototype.depthFirstLog = function (cb) {
   innerDFL(this);
 };
 
+BinarySearchTree.prototype.breadthFirstLog = function (cb) {
+  const queue = [];
+  queue.push(this);
+
+  while (queue.length > 0) {
+    cb(queue[0]);
+    let node = queue.pop();
+
+    if (node.left !== null) {
+      queue.push(node.left);
+    }
+
+    if (node.right !== null) {
+      queue.push(node.right);
+    }
+  }
+};
+
 /*
  * Complexity: What is the time complexity of the above functions?
  assume N is number of nodes
