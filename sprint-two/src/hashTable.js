@@ -3,6 +3,7 @@
 var HashTable = function () {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
+  this._count = 0;
   // for each element in storage
   /* for (let i = 0; i < this._limit; i++) {
     this._storage.set(i, []);
@@ -18,9 +19,19 @@ HashTable.prototype.insert = function (k, v) {
     bucket = [];
   }
 
+  let found = false;
   // add property k, v to bucket
-
-  bucket.push([k, v]);
+  for (let i = 0; i < bucket.length; i += 1) {
+    const tuple = bucket[i];
+    if (tuple[0] === k) {
+      found = true;
+      tuple[1] = v;
+      break;
+    }
+  }
+  if (!found) {
+    bucket.push([k, v]);
+  }
   this._storage.set(index, bucket);
 };
 
@@ -35,6 +46,7 @@ HashTable.prototype.retrieve = function (k) {
       const tuple = bucket[i];
       if (tuple[0] === k) {
         v = tuple[1];
+        break;
       }
     }
   }
@@ -58,6 +70,10 @@ HashTable.prototype.remove = function (k) {
       }
     }
   }
+};
+
+HashTable.prototype.resize = function (newLimit) {
+
 };
 
 
