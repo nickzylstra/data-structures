@@ -71,7 +71,7 @@ BinarySearchTree.prototype.breadthFirstLog = function (cb) {
 
   while (queue.length > 0) {
     cb(queue[0]);
-    let node = queue.pop();
+    let node = queue.shift();
 
     if (node.left !== null) {
       queue.push(node.left);
