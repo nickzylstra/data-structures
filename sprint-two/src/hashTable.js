@@ -4,39 +4,66 @@ var HashTable = function () {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
   // for each element in storage
-  for (let i = 0; i < this._limit; i++) {
-    this._storage.set(i, {});
-  }
+  /* for (let i = 0; i < this._limit; i++) {
+    this._storage.set(i, []);
+  } */
 };
 
 HashTable.prototype.insert = function (k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   // declare bucket and get bucket from storage[index]
-  const bucket = this._storage.get(index);
+  let bucket = this._storage.get(index);
+
+  if (!bucket) {
+    bucket = [];
+  }
+
   // add property k, v to bucket
-  bucket[k] = v;
+
+  bucket.push([k, v]);
   this._storage.set(index, bucket);
 };
 
 HashTable.prototype.retrieve = function (k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   // declare bucket and assign to storage[index]
-  const bucket = this._storage.get(index);
+  let bucket = this._storage.get(index);
+
+  let v;
+  if (bucket) {
+    for (let i = 0; i < bucket.length; i += 1) {
+      const tuple = bucket[i];
+      if (tuple[0] === k) {
+        v = tuple[1];
+      }
+    }
+  }
+
   // return the value at key in bucket
-  return bucket[k];
+  return v;
 };
 
 HashTable.prototype.remove = function (k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   // declare bucket and assign to storage[index]
   const bucket = this._storage.get(index);
-  // delete the key in bucket
-  delete bucket[k];
+
+  if (bucket) {
+    // delete the key in bucket
+    for (let i = 0; i < bucket.length; i += 1) {
+      const tuple = bucket[i];
+      if (tuple[0] === k) {
+        bucket.splice(i, 1);
+        return;
+      }
+    }
+  }
 };
 
 
 
 /*
  * Complexity: What is the time complexity of the above functions?
- All are O(1)
+ N is number of kv tuples
+ All are O(N)
  */
