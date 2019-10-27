@@ -29,9 +29,16 @@ HashTable.prototype.insert = function (k, v) {
       break;
     }
   }
+
   if (!found) {
     bucket.push([k, v]);
+    this._count += 1;
+    if (this._count > this._limit * .75) {
+      debugger;
+      this._resize(this._limit * 2);
+    }
   }
+
   this._storage.set(index, bucket);
 };
 
@@ -64,19 +71,36 @@ HashTable.prototype.remove = function (k) {
     // delete the key in bucket
     for (let i = 0; i < bucket.length; i += 1) {
       const tuple = bucket[i];
+
       if (tuple[0] === k) {
         bucket.splice(i, 1);
+        this._count -= 1;
+
+        if (this._count < this._limit * .25 && this._limit > 4) {
+          this._resize(this._limit / 2);
+        }
+
         return;
       }
     }
   }
 };
 
-HashTable.prototype.resize = function (newLimit) {
+HashTable.prototype._resize = function (newLimit) {
+  oldStorage = this._storage;
+  this._limit = newLimit;
+  this._storage = LimitedArray(newLimit);
 
+  // copy over elements
+  oldStorage.each(((bucket) => {
+    if (bucket) {
+      for (let i = 0; i < bucket.length; i += 1) {
+        const tuple = bucket[i];
+        this.insert(tuple[0], tuple[1]);
+      }
+    }
+  }).bind(this));
 };
-
-
 
 /*
  * Complexity: What is the time complexity of the above functions?
